@@ -1,0 +1,1 @@
+{"version":"0.2.0","configurations":[{"name":"Run Pcap Lens","type":"extensionHost","request":"launch","args":["--extensionDevelopmentPath=${workspaceFolder}"],"outFiles":["${workspaceFolder}/dist/**/*.cjs"],"preLaunchTask":"build"}]}

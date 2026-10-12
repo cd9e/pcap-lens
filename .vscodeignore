@@ -1,0 +1,16 @@
+node_modules/**
+src/**
+tests/**
+scripts/**
+fixtures/**
+**/*.map
+tsconfig.json
+vite.config.mts
+package-lock.json
+.gitignore
+
+.test-output/**
+.vscode/**
+
+.vscode-test/**
+.github/**

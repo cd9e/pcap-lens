@@ -1,0 +1,30 @@
+name: Validate extension
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run test:extension
+        if: runner.os != 'Linux'
+      - run: xvfb-run -a npm run test:extension
+        if: runner.os == 'Linux'
+      - run: npm run package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pcap-lens-${{ matrix.os }}
+          path: '*.vsix'

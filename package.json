@@ -1,0 +1,106 @@
+{
+  "name": "pcap-lens",
+  "version": "0.1.3",
+  "description": "Offline HTTP-first pcap and pcapng analysis inside VS Code",
+  "main": "./dist/extension.cjs",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "package": "vsce package --no-dependencies --no-rewrite-relative-links",
+    "vscode:prepublish": "npm run build",
+    "format": "prettier --write src tests scripts docs *.json *.mts",
+    "test:ui": "npm run build && node --import tsx tests/webview.mts",
+    "demo": "node --import tsx scripts/demo.ts",
+    "test:extension": "node scripts/test-extension.mjs",
+    "package:marketplace": "node scripts/package-marketplace.mjs"
+  },
+  "keywords": [
+    "pcap",
+    "pcapng",
+    "http",
+    "network",
+    "wireshark"
+  ],
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.5.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@types/vscode": "1.95.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  },
+  "displayName": "Pcap Lens",
+  "publisher": "pcap-lens-local",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onCustomEditor:pcapLens.capture"
+  ],
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "pcapLens.capture",
+        "displayName": "Pcap Lens",
+        "selector": [
+          {
+            "filenamePattern": "*.pcap"
+          },
+          {
+            "filenamePattern": "*.pcapng"
+          },
+          {
+            "filenamePattern": "*.PCAP"
+          },
+          {
+            "filenamePattern": "*.PCAPNG"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "configuration": {
+      "title": "Pcap Lens",
+      "properties": {
+        "pcapLens.wiresharkPath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional absolute path to the Wireshark executable.",
+          "scope": "machine"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "pcapLens.configureWireshark",
+        "title": "%configureWiresharkTitle%",
+        "category": "Pcap Lens"
+      }
+    ]
+  },
+  "capabilities": {
+    "virtualWorkspaces": {
+      "supported": false,
+      "description": "Pcap Lens requires filesystem access on the local or SSH workspace host."
+    }
+  }
+}
